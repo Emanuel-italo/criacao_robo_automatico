@@ -1,0 +1,36 @@
+services:
+  backend:
+    build: ./backend
+    restart: unless-stopped
+    environment:
+      - PASTA_SAIDA=/app/arquivos
+      - PASTA_DADOS=/app/dados
+      - PASTA_UPLOADS=/app/uploads
+      - MAX_UPLOAD_MB=25
+      - MAX_WORKERS=4
+      - TZ=America/Sao_Paulo
+    volumes:
+      - arquivos:/app/arquivos          # relatórios gerados pelos robôs
+      - ./dados:/app/dados:ro           # base padrão opcional (orcamento.xlsx)
+      - uploads:/app/uploads            # planilhas enviadas pelo usuário no chat
+    expose:
+      - "8000"                          # não exposto na máquina host: só o nginx acessa
+    networks: [caio-net]
+
+  frontend:
+    build: ./frontend
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_healthy
+    ports:
+      - "8080:8080"                     # http://localhost:8080
+    networks: [caio-net]
+
+volumes:
+  arquivos:
+  uploads:
+
+networks:
+  caio-net:
+    driver: bridge
