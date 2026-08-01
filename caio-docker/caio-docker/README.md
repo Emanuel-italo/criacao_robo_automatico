@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-# criacao_robo_automatico
-=======
 # Caio — Assistente Virtual (Docker + robôs Python)
 
 Front estático servido por Nginx + backend Flask que orquestra robôs Python.
@@ -159,4 +156,3 @@ _ACOES = [
 ```
 
 Depois trate o `acao` no fim do `executar()`. O front não muda: ele renderiza os botões a partir do que o robô devolve.
->>>>>>> develop

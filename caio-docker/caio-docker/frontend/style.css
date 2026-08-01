@@ -1,0 +1,692 @@
+/* =====================================================
+   Variáveis & Configurações Globais
+===================================================== */
+:root {
+  /* Cores & Fontes */
+  --bradesco-red: #cc0000;
+  --bradesco-dark-red: #990000;
+  --bradesco-gray: #F5F5F5;
+  --bradesco-dark: #333333;
+  --font-main: 'Segoe UI', Arial, sans-serif;
+
+  /* Dimensões & Bordas */
+  --transition-speed: 0.3s;
+  --border-radius: 8px;
+  --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  --btn-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* =====================================================
+   Reset & Estilos Básicos
+===================================================== */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-main);
+  color: var(--bradesco-dark);
+  min-height: 100vh;
+  /* Fundo animado com gradiente em movimento */
+  background: linear-gradient(45deg, #f5f7fa, #ffffff, #e6e9f0);
+  background-size: 400% 400%;
+  animation: gradientAnimation 15s ease infinite;
+}
+
+/* Gradiente animado para o fundo */
+@keyframes gradientAnimation {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* =====================================================
+   Layout Principal
+===================================================== */
+.desktop-container {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 20px;
+  padding: 20px;
+  height: 100vh;
+}
+
+/* Em resoluções menores, adapta para uma coluna única */
+@media (max-width: 1024px) {
+  .desktop-container {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+}
+
+/* =====================================================
+   Painel Lateral de Serviços
+===================================================== */
+.services-panel {
+  background-color: var(--bradesco-gray);
+  padding: 30px 20px;
+  border-right: 4px solid var(--bradesco-red);
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  border-top-left-radius: var(--border-radius);
+  border-bottom-left-radius: var(--border-radius);
+}
+
+.services-panel h2 {
+  color: var(--bradesco-red);
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--bradesco-red);
+}
+
+/* =====================================================
+   Cards de Serviço com Efeitos (Brilho e Hover)
+===================================================== */
+.service-card {
+  position: relative;
+  background-color: #fff;
+  border-left: 4px solid var(--bradesco-red);
+  padding: 15px;
+  margin-bottom: 15px;
+  cursor: pointer;
+  transition: transform var(--transition-speed), background-color var(--transition-speed), box-shadow var(--transition-speed);
+  overflow: hidden;
+  border-radius: var(--border-radius);
+}
+
+.service-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, var(--bradesco-red), transparent);
+  opacity: 0;
+  transition: opacity 0.5s;
+  pointer-events: none;
+}
+
+.service-card:hover {
+  background-color: #f2f2f2;
+  transform: translateX(5px) scale(1.02);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.service-card:hover::after {
+  opacity: 0.2;
+}
+
+.service-card h3 {
+  color: var(--bradesco-red);
+  margin-bottom: 5px;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+/* =====================================================
+   Área Principal com Animação de Entrada
+===================================================== */
+.main-content {
+  padding: 20px;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  border-radius: var(--border-radius);
+  box-shadow: var(--card-shadow);
+  animation: contentFadeIn 0.5s ease;
+}
+
+@keyframes contentFadeIn {
+  from { opacity: 0; transform: scale(0.98); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* =====================================================
+   Cabeçalho de Perfil
+===================================================== */
+.profile-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #eee;
+}
+.profile-image {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  margin-right: 20px;
+  object-fit: cover;
+  border: 3px solid var(--bradesco-red);
+  animation: fadeInImage 0.6s ease-out;
+  transition: transform 0.2s, filter 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  position: relative; /* necessário para posicionar o pseudo-elemento */
+}
+
+.profile-image:hover {
+  transform: scale(1.05);
+  filter: brightness(1.1) contrast(1.1) saturate(1.2);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Pseudo-elemento para criar um efeito de glow ao redor da imagem */
+.profile-image::after {
+  content: "";
+  position: absolute;
+  top: -8px;
+  left: -8px;
+  width: calc(100% + 16px);
+  height: calc(100% + 16px);
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  opacity: 0;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.profile-image:hover::after {
+  opacity: 1;
+  transform: scale(1.05);
+}
+
+
+
+.profile-info h1 {
+  color: var(--bradesco-red);
+  font-size: 1.8em;
+  margin-bottom: 5px;
+}
+
+.profile-info p {
+  font-size: 0.9em;
+  margin: 2px 0;
+}
+
+/* =====================================================
+   Ações Rápidas com Efeito de Brilho
+===================================================== */
+.quick-actions {
+  margin-bottom: 20px;
+  display: flex;
+  gap: 15px;
+}
+
+.quick-action-btn {
+  position: relative;
+  background: linear-gradient(135deg, var(--bradesco-red), var(--bradesco-dark-red));
+  border: none;
+  color: #fff;
+  padding: 10px 20px;
+  font-size: 0.85em;
+  border-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  z-index: 0;
+}
+
+.quick-action-btn::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent, rgba(255,255,255,0.5), transparent);
+  transform: rotate(45deg);
+  opacity: 0;
+  transition: opacity 0.5s;
+  z-index: -1;
+}
+
+.quick-action-btn:hover::before {
+  opacity: 1;
+}
+
+.quick-action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+  background: linear-gradient(135deg, var(--bradesco-dark-red), var(--bradesco-red));
+}
+
+.quick-action-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* =====================================================
+   Container e Trigger do Chat
+===================================================== */
+.chat-container {
+  position: relative;
+  flex-grow: 1;
+}
+
+.chat-trigger-btn {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  background: var(--bradesco-red);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  font-size: 1.1em;
+  cursor: pointer;
+  transition: background var(--transition-speed);
+  box-shadow: var(--btn-shadow);
+  /* Animação pulsante para atrair atenção */
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(204, 0, 0, 0.7); }
+  70% { box-shadow: 0 0 0 10px rgba(204, 0, 0, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(204, 0, 0, 0); }
+}
+
+.chat-trigger-btn:hover {
+  background: var(--bradesco-dark-red);
+}
+
+/* =====================================================
+   Chat Box com Efeito Glassmorphism
+===================================================== */
+.chat-box {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  height: 500px;
+  max-height: 80vh;
+  border-radius: calc(var(--border-radius) + 4px);
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 0.5s ease-out;
+}
+
+/* Nova animação de entrada para o chat */
+@keyframes chatEntrance {
+  0% {
+    opacity: 0;
+    transform: scale(0.5) translateY(20px);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.1) translateY(-10px);
+  }
+  70% {
+    opacity: 0.85;
+    transform: scale(0.95) translateY(5px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Classe que aplica o efeito de entrada ao chat */
+.chat-box.show {
+  animation: chatEntrance 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+
+/* Cabeçalho do Chat com Fundo Dinâmico */
+.chat-header {
+  background: linear-gradient(135deg, var(--bradesco-red), var(--bradesco-dark-red));
+  color: #fff;
+  padding: 15px 20px;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  transition: background var(--transition-speed);
+}
+
+.chat-header:hover {
+  animation: headerGradient 3s infinite;
+}
+
+@keyframes headerGradient {
+  0% { background: var(--bradesco-red); }
+  50% { background: var(--bradesco-dark-red); }
+  100% { background: var(--bradesco-red); }
+}
+
+.close-btn {
+  font-size: 1.5em;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.close-btn:hover {
+  transform: rotate(90deg);
+}
+
+/* =====================================================
+   Área de Mensagens do Chat
+===================================================== */
+.chat-messages {
+  flex-grow: 1;
+  padding: 20px;
+  overflow-y: auto;
+  background-color: var(--bradesco-gray);
+}
+
+/* Scrollbar customizada para WebKit e Firefox */
+.chat-messages::-webkit-scrollbar {
+  width: 8px;
+}
+.chat-messages::-webkit-scrollbar-track {
+  background: var(--bradesco-gray);
+  border-radius: var(--border-radius);
+}
+.chat-messages::-webkit-scrollbar-thumb {
+  background: var(--bradesco-red);
+  border-radius: var(--border-radius);
+}
+.chat-messages {
+  scrollbar-width: thin;
+  scrollbar-color: var(--bradesco-red) var(--bradesco-gray);
+}
+
+/* =====================================================
+   Mensagens do Chat e Animação de Entrada
+===================================================== */
+.message {
+  margin-bottom: 15px;
+  max-width: 70%;
+  padding: 12px 15px;
+  border-radius: var(--border-radius);
+  line-height: 1.5;
+  word-wrap: break-word;
+  animation: fadeInMessage 0.3s ease;
+}
+
+/* Animação 3D de entrada para o chat: vem do topo com rotação e escala */
+@keyframes chatEntranceTop {
+  0% {
+    opacity: 0;
+    transform: perspective(600px) rotateX(-90deg) scale(0.5);
+  }
+  40% {
+    opacity: 0.8;
+    transform: perspective(600px) rotateX(20deg) scale(1.05);
+  }
+  60% {
+    opacity: 1;
+    transform: perspective(600px) rotateX(-10deg) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: perspective(600px) rotateX(0deg) scale(1);
+  }
+}
+
+/* Nova classe que aciona o efeito de entrada 3D */
+.chat-box.show-top {
+  animation: chatEntranceTop 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+
+.user-message {
+  background-color: #e0e0e0;
+  color: var(--bradesco-dark);
+  margin-left: auto;
+  border-top-right-radius: 0;
+}
+
+.bot-message {
+  background-color: var(--bradesco-red);
+  color: #fff;
+  margin-right: auto;
+  border-top-left-radius: 0;
+}
+
+/* =====================================================
+   Indicador de Digitação
+===================================================== */
+.typing-indicator {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.typing-dot {
+  width: 8px;
+  height: 8px;
+  background-color: #bbb;
+  border-radius: 50%;
+  animation: blink 1s infinite alternate;
+}
+
+.typing-dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.typing-dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes blink {
+  from { opacity: 0.3; }
+  to   { opacity: 1; }
+}
+
+/* =====================================================
+   Input do Chat com Transições e Feedback Visual
+===================================================== */
+.chat-input {
+  display: flex;
+  padding: 15px;
+  background-color: #fff;
+  border-top: 1px solid #eee;
+}
+
+.chat-input input {
+  flex-grow: 1;
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+  transition: border-color var(--transition-speed);
+  outline: none;
+}
+
+.chat-input input:focus {
+  border-color: var(--bradesco-red);
+}
+
+.chat-input button {
+  background-color: var(--bradesco-red);
+  color: #fff;
+  border: none;
+  padding: 0 20px;
+  margin-left: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background var(--transition-speed);
+}
+
+.chat-input button:hover {
+  background-color: var(--bradesco-dark-red);
+}
+
+/* =====================================================
+   Botões de Opção (Áreas)
+===================================================== */
+.area-btn-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.area-btn {
+  background: linear-gradient(120deg, #2d2d2d, #3f3f3f);
+  color: #fff;
+  border: none;
+  padding: 12px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 10px;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+}
+
+.area-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.area-btn:active {
+  transform: scale(0.98);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* =====================================================
+   Utilitário para Leitores de Tela
+===================================================== */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+}
+
+#loadingScreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(45deg, var(--bradesco-red), var(--bradesco-dark-red));
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  z-index: 9999;
+  overflow: hidden;
+}
+
+/* 🔥 Logo animado */
+#loadingLogo {
+  width: 120px;
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.8));
+  animation: fadeInLogo 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes fadeInLogo {
+  0% { transform: scale(1); opacity: 0.7; }
+  100% { transform: scale(1.1); opacity: 1; }
+}
+
+/* 🔥 Texto do carregamento */
+.loading-content {
+  text-align: center;
+  color: white;
+  font-size: 1.5em;
+  margin-top: 10px;
+}
+
+/* 🔥 Barra de progresso moderna */
+.progress-bar {
+  width: 300px;
+  height: 16px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  overflow: hidden;
+  margin-top: 15px;
+  position: relative;
+}
+
+/* 🔥 Progresso com brilho */
+#progressFill {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, #ffffff, #FFD700);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+  transition: width 0.5s ease-in-out;
+  position: relative;
+}
+
+/* 🔥 Brilho extra */
+#progressGlow {
+  position: absolute;
+  top: -10px;
+  left: 0;
+  width: 100%;
+  height: 30px;
+  background: radial-gradient(circle, rgba(255,255,255,0.5) 10%, transparent 70%);
+  opacity: 0.7;
+  filter: blur(10px);
+}
+
+
+
+/* ===== Resultados dos robôs no chat ===== */
+.robo-titulo{font-weight:700;color:#CC092F;margin:4px 0 2px;font-size:.95rem;}
+.robo-resumo{font-size:.8rem;opacity:.75;margin-bottom:8px;}
+.robo-vazio{font-size:.85rem;opacity:.7;padding:6px 0;}
+.robo-texto{font-size:.88rem;line-height:1.5;}
+.robo-tabela-wrap{overflow-x:auto;margin:6px 0;-webkit-overflow-scrolling:touch;}
+.robo-tabela{width:100%;border-collapse:collapse;font-size:.78rem;}
+.robo-tabela th{background:#CC092F;color:#fff;text-align:left;padding:6px 8px;white-space:nowrap;font-weight:600;}
+.robo-tabela td{padding:6px 8px;border-bottom:1px solid rgba(0,0,0,.08);white-space:nowrap;}
+.robo-tabela tbody tr:nth-child(even){background:rgba(204,9,47,.04);}
+.robo-kv{margin:6px 0;font-size:.85rem;}
+.robo-kv dt{font-weight:600;opacity:.7;}
+.robo-kv dd{margin:0 0 8px;}
+.robo-download{display:inline-block;margin:8px 0;padding:8px 14px;background:#CC092F;color:#fff;
+  border-radius:6px;text-decoration:none;font-size:.85rem;font-weight:600;}
+.robo-download:hover{filter:brightness(1.1);}
+.robo-rodape{margin-top:8px;font-size:.7rem;opacity:.5;}
+.service-card.card-ocupado{opacity:.55;pointer-events:none;position:relative;}
+.service-card.card-ocupado::after{content:"executando...";position:absolute;right:12px;top:12px;
+  font-size:.68rem;color:#CC092F;font-weight:600;}
+@media (prefers-reduced-motion:reduce){.service-card{transition:none;}}
+.service-card.card-wip{opacity:.72;border-style:dashed;}
+.service-card.card-wip h3::after{content:"em breve";margin-left:8px;font-size:.62rem;
+  font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:#CC092F;
+  border:1px solid currentColor;border-radius:99px;padding:1px 6px;vertical-align:middle;}
+
+/* ===== Menu de alternativas do robô ===== */
+.opcoes-container{display:flex;flex-direction:column;gap:6px;margin-top:10px;}
+.opcao-btn{text-align:left;padding:9px 12px;border:1px solid #CC092F;background:transparent;
+  color:#CC092F;border-radius:8px;font-size:.82rem;font-weight:600;cursor:pointer;
+  transition:background .15s,color .15s;font-family:inherit;}
+.opcao-btn:hover:not(:disabled){background:#CC092F;color:#fff;}
+.opcao-btn:disabled{opacity:.45;cursor:default;}
+.opcao-btn:focus-visible{outline:2px solid #CC092F;outline-offset:2px;}
+.opcao-escolhida{background:#CC092F;color:#fff;opacity:1 !important;}
+.opcao-destaque{background:#CC092F;color:#fff;margin-top:10px;}
+.opcao-menu{margin-top:10px;padding:6px 10px;font-size:.75rem;font-weight:500;}
+
+/* ===== Anexo de planilha ===== */
+.btn-anexo{background:transparent;border:none;font-size:1.15rem;cursor:pointer;padding:0 8px;
+  line-height:1;color:#CC092F;}
+.btn-anexo:hover{filter:brightness(1.2);}
+.btn-anexo:focus-visible{outline:2px solid #CC092F;outline-offset:2px;border-radius:4px;}
+.arquivo-ativo{padding:6px 12px 0;}
+.chip-arquivo{display:inline-flex;align-items:center;gap:6px;max-width:100%;
+  background:rgba(204,9,47,.08);border:1px solid rgba(204,9,47,.35);color:#CC092F;
+  border-radius:99px;padding:3px 6px 3px 12px;font-size:.72rem;font-weight:600;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.chip-remover{background:none;border:none;color:inherit;font-size:1rem;cursor:pointer;
+  line-height:1;padding:0 4px;}
