@@ -13,7 +13,7 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
-RUN mkdir -p /app/arquivos && \
+RUN mkdir -p /app/arquivos /app/uploads /app/dados && \
     useradd -m -u 1000 caio && chown -R caio:caio /app
 USER caio
 

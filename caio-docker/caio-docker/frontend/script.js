@@ -14,12 +14,20 @@ let conversationState = {
   isTyping: false
 };
 
-const AREAS_BP = {
-  'Orçamento':        'Acompanhamento de orçado x realizado e projeções de fechamento.',
-  'Headcount':        'Posições, movimentações e evolução do quadro.',
-  'Recrutamento':     'Vagas em aberto, tempo de preenchimento e pipeline.',
-  'Outro assunto':    'Descreva no chat que eu direciono.'
-};
+// Busca no backend os robôs que realmente existem
+async function listarServicos() {
+  try {
+    const r = await fetch(`${API}/robos`).then(r => r.json());
+    return r.success ? r.robos : [];
+  } catch { return []; }
+}
+
+async function selectOption(roboId) {
+  const robo = (await listarServicos()).find(r => r.id === roboId);
+  appendUserMessage(robo ? robo.nome : roboId);
+  conversationState.step = 3;
+  await showService(roboId);   // aciona o mesmo robô do card
+}
 
 const domElements = {
   chatBox: document.getElementById('chatBox'),
@@ -146,17 +154,29 @@ async function sendMessage() {
   domElements.userInput.value = '';
 
   switch (conversationState.step) {
-    case 1:
+case 1:
       conversationState.userName = sanitizeInput(text);
       showTypingIndicator();
-      setTimeout(() => {
+      listarServicos().then(robos => {
         removeTypingIndicator();
-        appendBotMessage(
-          `Prazer, ${conversationState.userName}! Com o que você precisa de ajuda hoje?`,
-          Object.keys(AREAS_BP)
-        );
+        const div = document.createElement('div');
+        div.className = 'message bot-message';
+        div.innerHTML = `<strong>CAIO:</strong> Prazer, ${conversationState.userName}! ` +
+                        `Estes são os serviços disponíveis hoje:`;
+        const cont = document.createElement('div');
+        cont.className = 'area-btn-container';
+        robos.forEach(r => {
+          const b = document.createElement('button');
+          b.className = 'area-btn';
+          b.textContent = r.nome;
+          b.onclick = () => selectOption(r.id);
+          cont.appendChild(b);
+        });
+        div.appendChild(cont);
+        domElements.chatMessages.appendChild(div);
+        scrollToBottom();
         conversationState.step = 2;
-      }, BOT_DELAY);
+      });
       break;
 
     default:
