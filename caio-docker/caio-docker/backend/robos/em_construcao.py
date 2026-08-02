@@ -19,7 +19,7 @@ def executar(params: dict) -> dict:
         titulo="Em construção",
         texto=(
             "Esse serviço ainda está sendo desenvolvido.<br><br>"
-            "Se você é BP e tem uma rotina manual que gostaria de ver aqui, "
-            "descreva no chat que ela entra na fila de automação."
+            "Por enquanto, o serviço disponível é o de <strong>Orçamento</strong>, "
+            "no painel à esquerda."
         ),
     )
