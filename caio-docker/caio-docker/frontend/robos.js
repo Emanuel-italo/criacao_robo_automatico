@@ -39,7 +39,8 @@ async function showService(card) {
   sessaoRobo.roboId = roboId;
   sessaoRobo.acaoPendente = null;
 
-  appendUserMessage(`Abrir: ${card.replace('_', ' ')}`);
+  const rotulo = document.querySelector(`.service-card[onclick*="'${card}'"] h3`);
+  appendUserMessage(rotulo ? rotulo.textContent.trim() : card);
   await rodar(roboId, {}, card);   // sem "acao": o robô devolve o menu
 }
 

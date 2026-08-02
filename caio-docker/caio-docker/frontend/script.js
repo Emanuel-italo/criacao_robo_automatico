@@ -23,10 +23,8 @@ async function listarServicos() {
 }
 
 async function selectOption(roboId) {
-  const robo = (await listarServicos()).find(r => r.id === roboId);
-  appendUserMessage(robo ? robo.nome : roboId);
   conversationState.step = 3;
-  await showService(roboId);   // aciona o mesmo robô do card
+  await showService(roboId);   // aciona o mesmo robô do card (ele já registra a mensagem)
 }
 
 const domElements = {
@@ -106,10 +104,13 @@ function appendBotMessage(msg, options = []) {
     const container = document.createElement('div');
     container.className = 'area-btn-container';
     options.forEach(option => {
+      // Aceita string simples ou objeto do catálogo { id, nome }
+      const id = typeof option === 'string' ? option : option.id;
+      const rotulo = typeof option === 'string' ? option : option.nome;
       const button = document.createElement('button');
       button.className = 'area-btn';
-      button.textContent = option;
-      button.onclick = () => selectOption(option);
+      button.textContent = rotulo;
+      button.onclick = () => selectOption(id);
       container.appendChild(button);
     });
     messageDiv.appendChild(container);
@@ -130,22 +131,6 @@ function appendUserMessage(msg) {
 // --------------------------------------------------------------------------
 // Fluxo
 // --------------------------------------------------------------------------
-function selectOption(option) {
-  conversationState.userArea = option;
-  appendUserMessage(option);
-
-  showTypingIndicator();
-  setTimeout(() => {
-    removeTypingIndicator();
-    appendBotMessage(
-      `<div class="area-description">${AREAS_BP[option] || ''}</div>` +
-      'Escolha um serviço no painel à esquerda para acionar o robô, ' +
-      'ou envie sua planilha pelo clipe aqui embaixo.'
-    );
-    conversationState.step = 3;
-  }, BOT_DELAY);
-}
-
 async function sendMessage() {
   const text = domElements.userInput.value.trim();
   if (!text) return;
@@ -154,7 +139,7 @@ async function sendMessage() {
   domElements.userInput.value = '';
 
   switch (conversationState.step) {
-case 1:
+    case 1:
       conversationState.userName = sanitizeInput(text);
       showTypingIndicator();
       listarServicos().then(robos => {
@@ -181,13 +166,13 @@ case 1:
 
     default:
       showTypingIndicator();
-      setTimeout(() => {
+      listarServicos().then(robos => {
         removeTypingIndicator();
         appendBotMessage(
-          'Ainda não interpreto pedidos em texto livre — isso entra na próxima fase. ' +
-          'Por enquanto, clique em um serviço no painel à esquerda que eu aciono o robô.'
+          'Ainda estou aprendendo a interpretar texto livre. Posso te ajudar com:',
+          robos
         );
-      }, BOT_DELAY);
+      });
   }
 }
 
