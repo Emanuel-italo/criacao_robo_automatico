@@ -13,6 +13,9 @@ services:
       - arquivos:/app/arquivos          # relatórios gerados pelos robôs
       - ./dados:/app/dados:ro           # base padrão opcional (orcamento.xlsx)
       - uploads:/app/uploads            # planilhas enviadas pelo usuário no chat
+      # DEV: código dos robôs sem rebuild (basta docker compose restart backend)
+      - ./backend/robos:/app/robos:ro
+      - ./backend/app.py:/app/app.py:ro
     expose:
       - "8000"                          # não exposto na máquina host: só o nginx acessa
     networks: [caio-net]
@@ -25,6 +28,12 @@ services:
         condition: service_healthy
     ports:
       - "8080:8080"                     # http://localhost:8080
+    volumes:
+      # DEV: front sem rebuild (salvar o arquivo + Ctrl+Shift+R já basta)
+      - ./frontend/index.html:/usr/share/nginx/html/index.html:ro
+      - ./frontend/style.css:/usr/share/nginx/html/style.css:ro
+      - ./frontend/script.js:/usr/share/nginx/html/script.js:ro
+      - ./frontend/robos.js:/usr/share/nginx/html/robos.js:ro
     networks: [caio-net]
 
 volumes:
